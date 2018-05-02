@@ -1,29 +1,28 @@
 # Android
-# Build your Android projects, run tests, and sign and align Android App Package (APK) files.
+# Build your Android projects, run tests, and sign and align Android App Package files.
 # https://aka.ms/yaml
 
 queue: 'Hosted VS2017'
-
-#variables:
-#  system.debug: 'true'
-
 steps:
+
 - task: Gradle@2
-  displayName: 'Build the APK'
   inputs:
     gradleWrapperFile: 'gradlew'
-    tasks: 'assembleRelease' # Common tasks: assembleDebug, assembleRelease
+    testResultsFiles: '**/TEST-*.xml'
+    tasks: 'assembleRelease'
 
 - task: CopyFiles@2
-  displayName: 'Copy artifacts'
   inputs:
     contents: '**/*.apk'
     targetFolder: '$(build.artifactStagingDirectory)'
 
-- task: PublishBuildArtifacts@1
-  displayName: 'Publish artifacts'
+- task: 2ff763a7-ce83-4e1f-bc89-0ae63477cebe@1 #PublishBuildArtifacts@1
   inputs:
     pathToPublish: '$(build.artifactStagingDirectory)'
-    artifactName: 'artifact'
+    artifactName: 'drop'
     artifactType: 'container'
  
+# Next steps:
+# Test apps on real devices with the App Center Test task: https://github.com/Microsoft/vsts-tasks/tree/master/Tasks/AppCenterTest
+# Distribute apps to testers and users with the App Center Distribute task: https://github.com/Microsoft/vsts-tasks/tree/master/Tasks/AppCenterDistribute
+# Release to Google Play with the Google Play extension: https://marketplace.visualstudio.com/items?itemName=ms-vsclient.google-play
